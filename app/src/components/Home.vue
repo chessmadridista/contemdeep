@@ -17,6 +17,10 @@
                 :placeholder="calcAnswerPlaceholder"
                 >
                 </v-textarea>
+                <v-btn 
+                color="primary">
+                    Next
+                </v-btn>
             </v-card-text>
         </v-card>
     </v-container>
