@@ -1,20 +1,24 @@
 <template>
     <v-container>
-        <v-card>
+        <v-card 
+        v-for="exchange of exchanges"
+        :key="exchange.exchangeID">
             <v-switch
-            v-model="isDoOrDont"
-            :label="calcSwitchLabel"></v-switch>
+            v-model="exchange.isDoOrDont"
+            :label="calcLabelsAndPlaceholders(exchange.isDoOrDont)[0]"></v-switch>
             <v-card-text>
                 <v-textarea
                 outlined
-                :label="calcQuestionLabel"
-                :placeholder="calcQuestionPlaceholder"
+                :label="calcLabelsAndPlaceholders(exchange.isDoOrDont)[1]"
+                :placeholder="calcLabelsAndPlaceholders(exchange.isDoOrDont)[2]"
+                v-model="exchange.question"
                 >
                 </v-textarea>
                 <v-textarea
                 outlined
                 label="Because"
-                :placeholder="calcAnswerPlaceholder"
+                :placeholder="calcLabelsAndPlaceholders(exchange.isDoOrDont)[3]"
+                v-model="exchange.answer"
                 >
                 </v-textarea>
                 <v-btn 
@@ -30,66 +34,41 @@ export default {
     name: "Home",
     data() {
         return {
-            isDoOrDont: true,
+            exchanges: [
+                {
+                    exchangeID: 0,
+                    isDoOrDont: true,
+                    question: "",
+                    answer: "",
+                }
+            ],
         };
     },
-    computed: {
-        calcSwitchLabel() {
+    methods: {
+        calcLabelsAndPlaceholders(isDoOrDont) {
             let switchLabel;
-
-            switch (this.isDoOrDont) {
-                case true:
-                    switchLabel = "Do";
-                    break;
-                case false:
-                    switchLabel = "Don't";
-                    break;
-            }
-
-            return switchLabel;
-        },
-        calcQuestionLabel() {
             let questionLabel;
-
-            switch (this.isDoOrDont) {
-                case true:
-                    questionLabel = "Why do I";
-                    break;
-                case false:
-                    questionLabel = "Why don't I";
-                    break;
-            }
-
-            return questionLabel;
-        },
-        calcQuestionPlaceholder() {
             let questionPlaceholder;
-
-            switch (this.isDoOrDont) {
-                case true:
-                    questionPlaceholder = "Why do I procrastinate so much even though I have important stuff to do?";
-                    break;
-                case false:
-                    questionPlaceholder = "Why don't I smile at strangers?";
-                    break;
-            }
-
-            return questionPlaceholder;
-        },
-        calcAnswerPlaceholder() {
             let answerPlaceholder;
 
-            switch (this.isDoOrDont) {
+            switch (isDoOrDont) {
                 case true:
+                    switchLabel = "Do";
+                    questionLabel = "Why do I";
+                    questionPlaceholder = "Why do I procrastinate so much even though I have important stuff to do?";
                     answerPlaceholder = "Because I am overwhelmed by the responsibilities and I am afraid of failure.";
                     break;
                 case false:
+                    switchLabel = "Don't";
+                    questionLabel = "Why don't I";
+                    questionPlaceholder = "Why don't I smile at strangers?";
                     answerPlaceholder = "Because I am afraid of rejection. Sometimes they don't smile back at me.";
                     break;
             }
 
-            return answerPlaceholder;
+            return [switchLabel, questionLabel, questionPlaceholder, answerPlaceholder];
         },
     },
+    computed: {},
 }
 </script>
