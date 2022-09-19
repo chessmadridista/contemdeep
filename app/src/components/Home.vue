@@ -51,10 +51,16 @@ export default {
 
             return true;
         },
+        scrollToBottom() {
+            setTimeout(() => {
+                window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+            }, 0);
+
+            return true;
+        },
         createAnotherExchange() {
             const noOfExchanges = this.exchanges.length;
             const exchangeID = noOfExchanges - 1;
-            this.hideNextButton(exchangeID);
             let question = "";
             let answer = "";
             let submitted = false;
@@ -65,6 +71,8 @@ export default {
                 submitted: submitted,
             };
             this.exchanges.push(exchange);
+            this.hideNextButton(exchangeID);
+            this.scrollToBottom();
 
             return true;
         },
