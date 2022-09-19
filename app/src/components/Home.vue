@@ -1,24 +1,31 @@
 <template>
     <v-container>
-        <v-card>
-            <v-switch
-            v-model="isDoOrDont"
-            :label="calcSwitchLabel"></v-switch>
+        <v-card 
+        v-for="exchange of exchanges"
+        :key="exchange.exchangeID">
             <v-card-text>
                 <v-textarea
                 outlined
-                :label="calcQuestionLabel"
-                :placeholder="calcQuestionPlaceholder"
+                label="Question"
+                placeholder="Why do I procrastinate so much even though I have important stuff to do?"
+                :readonly="exchange.submitted"
+                :disabled="exchange.submitted"
+                v-model="exchange.question"
                 >
                 </v-textarea>
                 <v-textarea
                 outlined
-                label="Because"
-                :placeholder="calcAnswerPlaceholder"
+                label="Answer"
+                placeholder="Because I am overwhelmed by the responsibilities and I am afraid of failure."
+                :readonly="exchange.submitted"
+                :disabled="exchange.submitted"
+                v-model="exchange.answer"
                 >
                 </v-textarea>
                 <v-btn 
-                color="primary">
+                color="primary"
+                v-show="!exchange.submitted"
+                @click="createAnotherExchange()">
                     Next
                 </v-btn>
             </v-card-text>
@@ -30,65 +37,38 @@ export default {
     name: "Home",
     data() {
         return {
-            isDoOrDont: true,
+            exchanges: [
+                {
+                    exchangeID: 0,
+                    question: "",
+                    answer: "",
+                    submitted: false,
+                }
+            ],
         };
     },
-    computed: {
-        calcSwitchLabel() {
-            let switchLabel;
+    methods: {
+        hideNextButton(index) {
+            this.exchanges[index].submitted = true;
 
-            switch (this.isDoOrDont) {
-                case true:
-                    switchLabel = "Do";
-                    break;
-                case false:
-                    switchLabel = "Don't";
-                    break;
-            }
-
-            return switchLabel;
+            return true;
         },
-        calcQuestionLabel() {
-            let questionLabel;
+        createAnotherExchange() {
+            const noOfExchanges = this.exchanges.length;
+            const exchangeID = noOfExchanges - 1;
+            this.hideNextButton(exchangeID);
+            let question = "";
+            let answer = "";
+            let submitted = false;
+            const exchange = {
+                exchangeID: exchangeID,
+                question: question,
+                answer: answer,
+                submitted: submitted,
+            };
+            this.exchanges.push(exchange);
 
-            switch (this.isDoOrDont) {
-                case true:
-                    questionLabel = "Why do I";
-                    break;
-                case false:
-                    questionLabel = "Why don't I";
-                    break;
-            }
-
-            return questionLabel;
-        },
-        calcQuestionPlaceholder() {
-            let questionPlaceholder;
-
-            switch (this.isDoOrDont) {
-                case true:
-                    questionPlaceholder = "Why do I procrastinate so much even though I have important stuff to do?";
-                    break;
-                case false:
-                    questionPlaceholder = "Why don't I smile at strangers?";
-                    break;
-            }
-
-            return questionPlaceholder;
-        },
-        calcAnswerPlaceholder() {
-            let answerPlaceholder;
-
-            switch (this.isDoOrDont) {
-                case true:
-                    answerPlaceholder = "Because I am overwhelmed by the responsibilities and I am afraid of failure.";
-                    break;
-                case false:
-                    answerPlaceholder = "Because I am afraid of rejection. Sometimes they don't smile back at me.";
-                    break;
-            }
-
-            return answerPlaceholder;
+            return true;
         },
     },
 }
