@@ -5,12 +5,14 @@
         :key="exchange.exchangeID">
             <v-switch
             v-model="exchange.isDoOrDont"
-            :label="calcLabelsAndPlaceholders(exchange.isDoOrDont)[0]"></v-switch>
+            :label="calcLabelsAndPlaceholders(exchange.isDoOrDont)[0]"
+            :readonly="exchange.readOnly"></v-switch>
             <v-card-text>
                 <v-textarea
                 outlined
                 :label="calcLabelsAndPlaceholders(exchange.isDoOrDont)[1]"
                 :placeholder="calcLabelsAndPlaceholders(exchange.isDoOrDont)[2]"
+                :readonly="exchange.readOnly"
                 v-model="exchange.question"
                 >
                 </v-textarea>
@@ -18,11 +20,14 @@
                 outlined
                 label="Because"
                 :placeholder="calcLabelsAndPlaceholders(exchange.isDoOrDont)[3]"
+                :readonly="exchange.readOnly"
                 v-model="exchange.answer"
                 >
                 </v-textarea>
                 <v-btn 
-                color="primary">
+                color="primary"
+                v-show="!exchange.submitted"
+                @click="createAnotherExchange()">
                     Next
                 </v-btn>
             </v-card-text>
@@ -38,6 +43,8 @@ export default {
                 {
                     exchangeID: 0,
                     isDoOrDont: true,
+                    submitted: false,
+                    readOnly: false,
                     question: "",
                     answer: "",
                 }
@@ -67,6 +74,33 @@ export default {
             }
 
             return [switchLabel, questionLabel, questionPlaceholder, answerPlaceholder];
+        },
+        hideNextButton(noOfExchanges) {
+            this.exchanges[noOfExchanges - 1].submitted = true;
+            this.exchanges[noOfExchanges - 1].readOnly = true;
+
+            return true;
+        },
+        createAnotherExchange() {
+            const noOfExchanges = this.exchanges.length;
+            this.hideNextButton(noOfExchanges);
+            const exchangeID = noOfExchanges - 1;
+            let isDoOrDont = true;
+            let question = "";
+            let answer = "";
+            let submitted = false;
+            let readOnly = false;
+            const exchange = {
+                exchangeID: exchangeID,
+                isDoOrDont: isDoOrDont,
+                submitted: submitted,
+                readOnly: readOnly,
+                question: question,
+                answer: answer,
+            };
+            this.exchanges.push(exchange);
+
+            return true;
         },
     },
     computed: {},
