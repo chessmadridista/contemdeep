@@ -8,7 +8,6 @@
                 outlined
                 label="Question"
                 placeholder="Why do I procrastinate so much even though I have important stuff to do?"
-                :readonly="exchange.submitted"
                 :disabled="exchange.submitted"
                 v-model="exchange.question"
                 >
@@ -17,7 +16,6 @@
                 outlined
                 label="Answer"
                 placeholder="Because I am overwhelmed by the responsibilities and I am afraid of failure."
-                :readonly="exchange.submitted"
                 :disabled="exchange.submitted"
                 v-model="exchange.answer"
                 >
