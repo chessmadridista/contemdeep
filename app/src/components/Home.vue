@@ -9,6 +9,7 @@
                 label="Question"
                 placeholder="Why do I procrastinate so much even though I have important stuff to do?"
                 :disabled="exchange.submitted"
+                clearable
                 v-model="exchange.question"
                 >
                 </v-textarea>
@@ -17,6 +18,7 @@
                 label="Answer"
                 placeholder="Because I am overwhelmed by the responsibilities and I am afraid of failure."
                 :disabled="exchange.submitted"
+                clearable
                 v-model="exchange.answer"
                 >
                 </v-textarea>
