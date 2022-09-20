@@ -23,7 +23,7 @@
                 <v-btn 
                 color="primary"
                 v-show="!exchange.submitted"
-                @click="createAnotherExchange()">
+                @click="nextStep()">
                     Next
                 </v-btn>
             </v-card-text>
@@ -46,21 +46,14 @@ export default {
         };
     },
     methods: {
-        hideNextButton(index) {
+        hideNextButton() {
+            const index = this.exchanges.length - 1;
             this.exchanges[index].submitted = true;
 
             return true;
         },
-        scrollToBottom() {
-            setTimeout(() => {
-                window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
-            }, 0);
-
-            return true;
-        },
         createAnotherExchange() {
-            const noOfExchanges = this.exchanges.length;
-            const exchangeID = noOfExchanges - 1;
+            const exchangeID = this.exchanges.length;
             let question = "";
             let answer = "";
             let submitted = false;
@@ -71,7 +64,19 @@ export default {
                 submitted: submitted,
             };
             this.exchanges.push(exchange);
-            this.hideNextButton(exchangeID);
+
+            return true;
+        },
+        scrollToBottom() {
+            setTimeout(() => {
+                window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+            }, 0);
+
+            return true;
+        },
+        nextStep() {
+            this.hideNextButton();
+            this.createAnotherExchange();
             this.scrollToBottom();
 
             return true;
