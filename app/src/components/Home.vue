@@ -9,7 +9,9 @@
                 label="Question"
                 placeholder="Why do I procrastinate so much even though I have important stuff to do?"
                 :disabled="exchange.submitted"
+                clearable
                 v-model="exchange.question"
+                @input="isExchangeValid(exchange)"
                 >
                 </v-textarea>
                 <v-textarea
@@ -17,13 +19,16 @@
                 label="Answer"
                 placeholder="Because I am overwhelmed by the responsibilities and I am afraid of failure."
                 :disabled="exchange.submitted"
+                clearable
                 v-model="exchange.answer"
+                @input="isExchangeValid(exchange)"
                 >
                 </v-textarea>
                 <v-btn 
                 color="primary"
                 v-show="!exchange.submitted"
-                @click="createAnotherExchange()">
+                :disabled="!exchange.valid"
+                @click="nextStep()">
                     Next
                 </v-btn>
             </v-card-text>
@@ -41,13 +46,41 @@ export default {
                     question: "",
                     answer: "",
                     submitted: false,
+                    valid: false
                 }
             ],
         };
     },
     methods: {
-        hideNextButton(index) {
+        isExchangeValid(exchange) {
+            if (exchange.question && exchange.answer) {
+                exchange.valid = true;
+            } else {
+                exchange.valid = false;
+            }
+
+            return true;
+        },
+        hideNextButton() {
+            const index = this.exchanges.length - 1;
             this.exchanges[index].submitted = true;
+
+            return true;
+        },
+        createAnotherExchange() {
+            const exchangeID = this.exchanges.length;
+            let question = "";
+            let answer = "";
+            let submitted = false;
+            let valid = false;
+            const exchange = {
+                exchangeID: exchangeID,
+                question: question,
+                answer: answer,
+                submitted: submitted,
+                valid: valid,
+            };
+            this.exchanges.push(exchange);
 
             return true;
         },
@@ -58,24 +91,16 @@ export default {
 
             return true;
         },
-        createAnotherExchange() {
-            const noOfExchanges = this.exchanges.length;
-            const exchangeID = noOfExchanges - 1;
-            let question = "";
-            let answer = "";
-            let submitted = false;
-            const exchange = {
-                exchangeID: exchangeID,
-                question: question,
-                answer: answer,
-                submitted: submitted,
-            };
-            this.exchanges.push(exchange);
-            this.hideNextButton(exchangeID);
+        nextStep() {
+            this.hideNextButton();
+            this.createAnotherExchange();
             this.scrollToBottom();
 
             return true;
         },
+    },
+    computed: {
+        
     },
 }
 </script>
