@@ -11,6 +11,7 @@
                 :disabled="exchange.submitted"
                 clearable
                 v-model="exchange.question"
+                @change="isExchangeValid"
                 >
                 </v-textarea>
                 <v-textarea
@@ -20,11 +21,13 @@
                 :disabled="exchange.submitted"
                 clearable
                 v-model="exchange.answer"
+                @change="isExchangeValid"
                 >
                 </v-textarea>
                 <v-btn 
                 color="primary"
                 v-show="!exchange.submitted"
+                :disabled="!exchange.valid"
                 @click="nextStep()">
                     Next
                 </v-btn>
@@ -43,6 +46,7 @@ export default {
                     question: "",
                     answer: "",
                     submitted: false,
+                    valid: false
                 }
             ],
         };
@@ -59,11 +63,13 @@ export default {
             let question = "";
             let answer = "";
             let submitted = false;
+            let valid = false;
             const exchange = {
                 exchangeID: exchangeID,
                 question: question,
                 answer: answer,
                 submitted: submitted,
+                valid: valid,
             };
             this.exchanges.push(exchange);
 
@@ -80,6 +86,19 @@ export default {
             this.hideNextButton();
             this.createAnotherExchange();
             this.scrollToBottom();
+
+            return true;
+        },
+    },
+    computed: {
+        isExchangeValid() {
+            const exchange = this.exchanges.slice(-1).pop();
+
+            if (exchange.question && exchange.answer) {
+                exchange.valid = true;
+            } else {
+                exchange.valid = false;
+            }
 
             return true;
         },
