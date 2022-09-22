@@ -1,5 +1,21 @@
 <template>
     <v-container>
+        <v-snackbar
+        color="success"
+        v-model="snackbar"
+        top
+        right>
+            Successfully added!
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                icon
+                v-bind="attrs"
+                @click="snackbar = false"
+                >
+                <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
         <v-card 
         v-for="exchange of exchanges"
         :key="exchange.exchangeID">
@@ -40,6 +56,7 @@ export default {
     name: "Home",
     data() {
         return {
+            snackbar: false,
             exchanges: [
                 {
                     exchangeID: 0,
@@ -91,9 +108,15 @@ export default {
 
             return true;
         },
+        updateSnackbarState() {
+            this.snackbar = true;
+
+            return true;
+        },
         nextStep() {
             this.hideNextButton();
             this.createAnotherExchange();
+            this.updateSnackbarState();
             this.scrollToBottom();
 
             return true;
