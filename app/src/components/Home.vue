@@ -40,13 +40,21 @@
                 @input="isExchangeValid(exchange)"
                 >
                 </v-textarea>
-                <v-btn 
-                color="primary"
-                v-show="!exchange.submitted"
-                :disabled="!exchange.valid"
-                @click="nextStep()">
-                    Next
-                </v-btn>
+                <div>
+                    <v-btn 
+                    color="error"
+                    v-show="!exchange.submitted && exchange.exchangeID !== 0"
+                    @click="previousStep()">
+                        Previous
+                    </v-btn>
+                    <v-btn 
+                    color="primary"
+                    v-show="!exchange.submitted"
+                    :disabled="!exchange.valid"
+                    @click="nextStep()">
+                        Next
+                    </v-btn>
+                </div>
             </v-card-text>
         </v-card>
     </v-container>
@@ -75,6 +83,23 @@ export default {
             } else {
                 exchange.valid = false;
             }
+
+            return true;
+        },
+        deleteLastEntry() {
+            this.exchanges.pop();
+
+            return true;
+        },
+        updateSubmissionStatus() {
+            const noOfExchanges = this.exchanges.length;
+            this.exchanges[noOfExchanges - 1].submitted = false;
+            
+            return true;
+        },
+        previousStep() {
+            this.deleteLastEntry();
+            this.updateSubmissionStatus();
 
             return true;
         },
