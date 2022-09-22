@@ -11,7 +11,7 @@
                 :disabled="exchange.submitted"
                 clearable
                 v-model="exchange.question"
-                @change="isExchangeValid"
+                @input="isExchangeValid(exchange)"
                 >
                 </v-textarea>
                 <v-textarea
@@ -21,7 +21,7 @@
                 :disabled="exchange.submitted"
                 clearable
                 v-model="exchange.answer"
-                @change="isExchangeValid"
+                @input="isExchangeValid(exchange)"
                 >
                 </v-textarea>
                 <v-btn 
@@ -52,6 +52,15 @@ export default {
         };
     },
     methods: {
+        isExchangeValid(exchange) {
+            if (exchange.question && exchange.answer) {
+                exchange.valid = true;
+            } else {
+                exchange.valid = false;
+            }
+
+            return true;
+        },
         hideNextButton() {
             const index = this.exchanges.length - 1;
             this.exchanges[index].submitted = true;
@@ -91,17 +100,7 @@ export default {
         },
     },
     computed: {
-        isExchangeValid() {
-            const exchange = this.exchanges.slice(-1).pop();
-
-            if (exchange.question && exchange.answer) {
-                exchange.valid = true;
-            } else {
-                exchange.valid = false;
-            }
-
-            return true;
-        },
+        
     },
 }
 </script>
