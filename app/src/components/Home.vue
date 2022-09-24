@@ -57,6 +57,11 @@
                 </div>
             </v-card-text>
         </v-card>
+        <v-btn 
+        color="error"
+        @click="reset()">
+            Reset
+        </v-btn>
     </v-container>
 </template>
 <script>
@@ -71,8 +76,8 @@ export default {
                     question: "",
                     answer: "",
                     submitted: false,
-                    valid: false
-                }
+                    valid: false,
+                },
             ],
         };
     },
@@ -143,6 +148,34 @@ export default {
             this.createAnotherExchange();
             this.updateSnackbarState();
             this.scrollToBottom();
+
+            return true;
+        },
+        deleteExchanges() {
+            this.exchanges = [];
+
+            return true;
+        },
+        addFirstExchange() {
+            const exchangeID = 0;
+            let question = "";
+            let answer = "";
+            let submitted = false;
+            let valid = false;
+            const exchange = {
+                exchangeID: exchangeID,
+                question: question,
+                answer: answer,
+                submitted: submitted,
+                valid: valid,
+            };
+            this.exchanges.push(exchange);
+
+            return true;
+        },
+        reset() {
+            this.deleteExchanges();
+            this.addFirstExchange();
 
             return true;
         },
