@@ -57,11 +57,18 @@
                 </div>
             </v-card-text>
         </v-card>
-        <v-btn 
-        color="error"
-        @click="reset()">
-            Reset
-        </v-btn>
+        <div>
+            <v-btn 
+            color="error"
+            @click="reset()">
+                Reset
+            </v-btn>
+            <v-btn 
+            color="primary"
+            @click="submit()">
+                Submit
+            </v-btn>
+        </div>
     </v-container>
 </template>
 <script>
@@ -91,7 +98,7 @@ export default {
 
             return true;
         },
-        deleteLastEntry() {
+        deleteLastExchange() {
             this.exchanges.pop();
 
             return true;
@@ -103,7 +110,7 @@ export default {
             return true;
         },
         previousStep() {
-            this.deleteLastEntry();
+            this.deleteLastExchange();
             this.updateSubmissionStatus();
 
             return true;
@@ -176,6 +183,16 @@ export default {
         reset() {
             this.deleteExchanges();
             this.addFirstExchange();
+
+            return true;
+        },
+        saveExchangesInStore() {
+            this.$store.dispatch('saveExchanges', this.exchanges);
+            
+            return true;
+        },
+        submit() {
+            this.saveExchangesInStore();
 
             return true;
         },
