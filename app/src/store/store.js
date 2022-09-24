@@ -3,6 +3,15 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+function deleteLastExchange(exchanges) {
+  const noOfExchanges = exchanges.length;
+  exchanges = exchanges.filter((exchange) => {
+    return exchange.exchangeID < noOfExchanges - 1;
+  });
+  
+  return exchanges;
+}
+
 const store = new Vuex.Store({
   state: {
     exchanges: [],
@@ -14,11 +23,12 @@ const store = new Vuex.Store({
   },
   actions: {
     saveExchanges(context, exchanges) {
+      exchanges = deleteLastExchange(exchanges);
       context.commit('SET_EXCHANGES', exchanges);
 
       return true;
     },
   },
-})
+});
 
 export default store;

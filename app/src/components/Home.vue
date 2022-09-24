@@ -98,7 +98,7 @@ export default {
 
             return true;
         },
-        deleteLastEntry() {
+        deleteLastExchange() {
             this.exchanges.pop();
 
             return true;
@@ -110,7 +110,7 @@ export default {
             return true;
         },
         previousStep() {
-            this.deleteLastEntry();
+            this.deleteLastExchange();
             this.updateSubmissionStatus();
 
             return true;
@@ -192,7 +192,6 @@ export default {
             return true;
         },
         submit() {
-            this.deleteLastEntry();
             this.saveExchangesInStore();
 
             return true;
