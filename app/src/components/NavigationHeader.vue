@@ -9,7 +9,7 @@
         </v-app-bar>
         <v-navigation-drawer
         temporary
-        absolute
+        fixed
         v-model="drawer">
             <v-list-item-group>
                 <v-list nav>
