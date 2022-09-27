@@ -1,9 +1,21 @@
 <template>
   <v-app>
-    <router-view/>
+    <NavigationHeader />
+    <v-main>
+      <router-view/>
+    </v-main>
   </v-app>
 </template>
+<script>
+import NavigationHeader from './components/NavigationHeader.vue';
 
+export default {
+  name: "App",
+  components: {
+    NavigationHeader,
+  },
+};
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
