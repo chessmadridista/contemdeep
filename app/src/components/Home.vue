@@ -69,6 +69,14 @@
                 Submit
             </v-btn>
         </div>
+        <v-btn
+        fixed
+        fab
+        bottom
+        right
+        @click="goToTop()">
+            <v-icon>mdi-arrow-up</v-icon>
+        </v-btn>
     </v-container>
 </template>
 <script>
@@ -193,6 +201,11 @@ export default {
         },
         submit() {
             this.saveExchangesInStore();
+
+            return true;
+        },
+        goToTop() {
+            this.$vuetify.goTo(0);
 
             return true;
         },
