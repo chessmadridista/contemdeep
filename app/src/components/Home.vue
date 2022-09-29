@@ -17,7 +17,7 @@
             </template>
         </v-snackbar>
         <v-card
-        class="pb-6 mb-6"
+        class="pb-6 mb-6 rounded-lg"
         v-for="exchange of exchanges"
         :key="exchange.exchangeID">
             <v-card-text>
@@ -42,34 +42,44 @@
                 >
                 </v-textarea>
             </v-card-text>
-            <div>
+            <v-container class="buttons--exchange">
                 <v-btn 
+                absolute 
+                left
+                rounded
                 color="error"
                 v-show="!exchange.submitted && exchange.exchangeID !== 0"
                 @click="previousStep()">
                     Previous
                 </v-btn>
-                <v-btn 
+                <v-btn
+                absolute 
+                right
+                rounded
                 color="primary"
                 v-show="!exchange.submitted"
                 :disabled="!exchange.valid"
                 @click="nextStep()">
                     Next
                 </v-btn>
-            </div>
+            </v-container>
         </v-card>
-        <div>
+        <v-container>
             <v-btn 
             color="error"
+            class="mr-2"
+            rounded
             @click="reset()">
                 Reset
             </v-btn>
             <v-btn 
             color="primary"
+            class="ml-2"
+            rounded
             @click="submit()">
                 Submit
             </v-btn>
-        </div>
+        </v-container>
         <v-btn
         fixed
         icon
@@ -216,3 +226,8 @@ export default {
     },
 }
 </script>
+<style lang="scss" scoped>
+.buttons--exchange {
+    height: 45px;
+}
+</style>
