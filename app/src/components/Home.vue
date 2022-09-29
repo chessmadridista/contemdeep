@@ -16,7 +16,8 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-card 
+        <v-card
+        class="pb-6 mb-6"
         v-for="exchange of exchanges"
         :key="exchange.exchangeID">
             <v-card-text>
@@ -40,22 +41,22 @@
                 @input="isExchangeValid(exchange)"
                 >
                 </v-textarea>
-                <div>
-                    <v-btn 
-                    color="error"
-                    v-show="!exchange.submitted && exchange.exchangeID !== 0"
-                    @click="previousStep()">
-                        Previous
-                    </v-btn>
-                    <v-btn 
-                    color="primary"
-                    v-show="!exchange.submitted"
-                    :disabled="!exchange.valid"
-                    @click="nextStep()">
-                        Next
-                    </v-btn>
-                </div>
             </v-card-text>
+            <div>
+                <v-btn 
+                color="error"
+                v-show="!exchange.submitted && exchange.exchangeID !== 0"
+                @click="previousStep()">
+                    Previous
+                </v-btn>
+                <v-btn 
+                color="primary"
+                v-show="!exchange.submitted"
+                :disabled="!exchange.valid"
+                @click="nextStep()">
+                    Next
+                </v-btn>
+            </div>
         </v-card>
         <div>
             <v-btn 
@@ -71,7 +72,7 @@
         </div>
         <v-btn
         fixed
-        fab
+        icon
         bottom
         right
         @click="goToTop()">
