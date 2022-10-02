@@ -5,7 +5,7 @@
         v-model="snackbar"
         top
         right>
-            Successfully added!
+            {{ snackbarMessage }}
             <template v-slot:action="{ attrs }">
                 <v-btn
                 icon
@@ -96,6 +96,7 @@ export default {
     data() {
         return {
             snackbar: false,
+            snackbarMessage: "",
             exchanges: [
                 {
                     exchangeID: 0,
@@ -108,6 +109,12 @@ export default {
         };
     },
     methods: {
+        updateSnackbar(message) {
+            this.snackbar = true;
+            this.snackbarMessage = message;
+
+            return true;
+        },
         isExchangeValid(exchange) {
             if (exchange.question && exchange.answer) {
                 exchange.valid = true;
@@ -119,6 +126,8 @@ export default {
         },
         deleteLastExchange() {
             this.exchanges.pop();
+            const message = "The exchange has been deleted.";
+            this.updateSnackbar(message);
 
             return true;
         },
@@ -174,6 +183,8 @@ export default {
             this.createAnotherExchange();
             this.updateSnackbarState();
             this.scrollToBottom();
+            const message = "The exchange has been created."
+            this.updateSnackbar(message);
 
             return true;
         },
@@ -202,6 +213,8 @@ export default {
         reset() {
             this.deleteExchanges();
             this.addFirstExchange();
+            const message = "The conversation has been reset.";
+            this.updateSnackbar(message);
 
             return true;
         },
@@ -212,6 +225,8 @@ export default {
         },
         submit() {
             this.saveExchangesInStore();
+            const message = "The conversation has been submitted.";
+            this.updateSnackbar(message);
 
             return true;
         },
