@@ -5,7 +5,7 @@
         v-model="snackbar"
         top
         right>
-            Successfully added!
+            {{ snackbarMessage }}
             <template v-slot:action="{ attrs }">
                 <v-btn
                 icon
@@ -16,7 +16,8 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-card 
+        <v-card
+        class="pb-6 mb-6 rounded-lg"
         v-for="exchange of exchanges"
         :key="exchange.exchangeID">
             <v-card-text>
@@ -40,38 +41,48 @@
                 @input="isExchangeValid(exchange)"
                 >
                 </v-textarea>
-                <div>
-                    <v-btn 
-                    color="error"
-                    v-show="!exchange.submitted && exchange.exchangeID !== 0"
-                    @click="previousStep()">
-                        Previous
-                    </v-btn>
-                    <v-btn 
-                    color="primary"
-                    v-show="!exchange.submitted"
-                    :disabled="!exchange.valid"
-                    @click="nextStep()">
-                        Next
-                    </v-btn>
-                </div>
             </v-card-text>
+            <v-container class="buttons--exchange">
+                <v-btn 
+                absolute 
+                left
+                rounded
+                color="error"
+                v-show="!exchange.submitted && exchange.exchangeID !== 0"
+                @click="previousStep()">
+                    Previous
+                </v-btn>
+                <v-btn
+                absolute 
+                right
+                rounded
+                color="primary"
+                v-show="!exchange.submitted"
+                :disabled="!exchange.valid"
+                @click="nextStep()">
+                    Next
+                </v-btn>
+            </v-container>
         </v-card>
-        <div>
+        <v-container>
             <v-btn 
             color="error"
+            class="mr-2"
+            rounded
             @click="reset()">
                 Reset
             </v-btn>
             <v-btn 
             color="primary"
+            class="ml-2"
+            rounded
             @click="submit()">
                 Submit
             </v-btn>
-        </div>
+        </v-container>
         <v-btn
         fixed
-        fab
+        icon
         bottom
         right
         @click="goToTop()">
@@ -85,6 +96,7 @@ export default {
     data() {
         return {
             snackbar: false,
+            snackbarMessage: "",
             exchanges: [
                 {
                     exchangeID: 0,
@@ -97,6 +109,12 @@ export default {
         };
     },
     methods: {
+        updateSnackbar(message) {
+            this.snackbar = true;
+            this.snackbarMessage = message;
+
+            return true;
+        },
         isExchangeValid(exchange) {
             if (exchange.question && exchange.answer) {
                 exchange.valid = true;
@@ -108,6 +126,8 @@ export default {
         },
         deleteLastExchange() {
             this.exchanges.pop();
+            const message = "The exchange has been deleted.";
+            this.updateSnackbar(message);
 
             return true;
         },
@@ -163,6 +183,8 @@ export default {
             this.createAnotherExchange();
             this.updateSnackbarState();
             this.scrollToBottom();
+            const message = "The exchange has been created."
+            this.updateSnackbar(message);
 
             return true;
         },
@@ -191,6 +213,8 @@ export default {
         reset() {
             this.deleteExchanges();
             this.addFirstExchange();
+            const message = "The conversation has been reset.";
+            this.updateSnackbar(message);
 
             return true;
         },
@@ -201,6 +225,8 @@ export default {
         },
         submit() {
             this.saveExchangesInStore();
+            const message = "The conversation has been submitted.";
+            this.updateSnackbar(message);
 
             return true;
         },
@@ -215,3 +241,8 @@ export default {
     },
 }
 </script>
+<style lang="scss" scoped>
+.buttons--exchange {
+    height: 45px;
+}
+</style>
